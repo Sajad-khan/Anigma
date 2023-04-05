@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "394691487777",
+    "project_id": "anigma-517a4",
+    "storage_bucket": "anigma-517a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394691487777:android:74978aa6088c6992b71b60",
+        "android_client_info": {
+          "package_name": "com.example.anigma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "394691487777-rb5u4rc26j8e5i8nvkooq4ct211i63hp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.anigma",
+            "certificate_hash": "7bc238a34721b2182a0cd5cdcadeded57853cf74"
+          }
+        },
+        {
+          "client_id": "394691487777-eedo7qr3cdnn71qhk2fheu1n5hq739pt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU46zK-ltxp6MuWccpweNpCgj0ZKyI6Gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "394691487777-eedo7qr3cdnn71qhk2fheu1n5hq739pt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

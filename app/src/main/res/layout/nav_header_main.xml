@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_of_nav_main"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#41477A"
+    android:gravity="bottom"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circular_imageview"
+        android:layout_width="@dimen/circular_imageview_dimen"
+        android:layout_height="@dimen/circular_imageview_dimen"
+        android:layout_marginStart="@dimen/nav_content_margin_startEnd"
+        android:layout_marginTop="@dimen/nav_content_margin_top"
+        android:layout_marginEnd="@dimen/nav_content_margin_startEnd"
+        android:layout_marginBottom="@dimen/nav_content_margin_bottom"
+        android:src="@drawable/ic_nav_placeholder"
+        android:visibility="visible"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="@dimen/nav_image_circular_border_width" />
+    
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/nav_content_margin_startEnd"
+        android:layout_marginEnd="@dimen/nav_content_margin_startEnd"
+        android:layout_marginTop="@dimen/nav_content_margin_top"
+        android:layout_marginBottom="@dimen/nav_content_margin_bottom"
+        android:textColor="@color/white"
+        android:textSize="@dimen/nav_username_text_size"
+        tools:text="Username"/>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_divider_height"
+        android:background="@color/white"/>
+
+</LinearLayout>
