@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.example.anigma.R
 import com.example.anigma.anigma.firebase.FireStoreClass
 import com.example.anigma.anigma.model.User
+import com.example.anigma.anigma.utils.Constants
 import com.example.anigma.databinding.ActivityUserSignInBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -43,7 +44,9 @@ class UserSignIn : BaseActivity() {
     fun signInSuccess(loggedInUser: User){
         hideProgressDialog()
         Toast.makeText(this, "${loggedInUser.name} you are logged in.", Toast.LENGTH_LONG).show()
-        startActivity(Intent(this, MainActivity::class.java))
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra(Constants.CURR_USER, loggedInUser)
+        startActivity(intent)
         finish()
     }
 
@@ -57,7 +60,7 @@ class UserSignIn : BaseActivity() {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         val user = auth.currentUser
-                        FireStoreClass().signInUser(this)
+                        FireStoreClass().loadUserData(this)
                     } else {
                         Log.e("SIGN_INN", "Problem in user sign in class.")
                     }

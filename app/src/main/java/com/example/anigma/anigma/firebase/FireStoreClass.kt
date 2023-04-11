@@ -1,6 +1,10 @@
 package com.example.anigma.anigma.firebase
 
+import android.app.Activity
 import android.util.Log
+import android.widget.Toast
+import com.example.anigma.ProfileActivity
+import com.example.anigma.anigma.activities.MainActivity
 import com.example.anigma.anigma.activities.UserLogin
 import com.example.anigma.anigma.activities.UserSignIn
 import com.example.anigma.anigma.model.User
@@ -22,16 +26,38 @@ class FireStoreClass {
             }
     }
 
-    fun signInUser(activity: UserSignIn){
+    fun updateUserData(activity: ProfileActivity, userHashMap: HashMap<String, Any>){
+        mFirestore.collection(Constants.USERS)
+            .document(getCurrentUserId())
+            .update(userHashMap)
+            .addOnSuccessListener {
+                activity.profileUpdateSuccess()
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+            }
+    }
+    fun loadUserData(activity: Activity){
         mFirestore.collection(Constants.USERS)
             .document(getCurrentUserId()).get()
             .addOnSuccessListener { document ->
                 val loggedInUser = document.toObject(User::class.java)
                 if(loggedInUser != null){
-                    activity.signInSuccess(loggedInUser)
+                    when(activity){
+                        is UserSignIn -> {
+                            activity.signInSuccess(loggedInUser)
+                        }
+                        is MainActivity -> {
+                            activity.updateNavigationUserDetails(loggedInUser)
+                        }
+                        is ProfileActivity ->{
+                            activity.updateProfileUI(loggedInUser)
+                        }
+                    }
                 }
                 else {
                     Log.e("OBJECT", "unable to parcel the object")
+                    MainActivity().hideProgressDialog()
                 }
             }.addOnFailureListener {
             Log.e("SIGN_IN", it.toString())
