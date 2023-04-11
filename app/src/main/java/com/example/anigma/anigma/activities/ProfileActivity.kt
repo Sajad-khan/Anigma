@@ -1,4 +1,4 @@
-package com.example.anigma
+package com.example.anigma.anigma.activities
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -16,7 +16,7 @@ import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
-import com.example.anigma.anigma.activities.BaseActivity
+import com.example.anigma.R
 import com.example.anigma.anigma.firebase.FireStoreClass
 import com.example.anigma.anigma.model.User
 import com.example.anigma.anigma.utils.Constants

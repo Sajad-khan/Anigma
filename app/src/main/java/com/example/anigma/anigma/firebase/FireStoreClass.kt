@@ -2,8 +2,7 @@ package com.example.anigma.anigma.firebase
 
 import android.app.Activity
 import android.util.Log
-import android.widget.Toast
-import com.example.anigma.ProfileActivity
+import com.example.anigma.anigma.activities.ProfileActivity
 import com.example.anigma.anigma.activities.MainActivity
 import com.example.anigma.anigma.activities.UserLogin
 import com.example.anigma.anigma.activities.UserSignIn

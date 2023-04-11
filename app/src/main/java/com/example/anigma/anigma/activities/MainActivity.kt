@@ -10,7 +10,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
-import com.example.anigma.ProfileActivity
 import com.example.anigma.R
 import com.example.anigma.anigma.firebase.FireStoreClass
 import com.example.anigma.anigma.model.User
