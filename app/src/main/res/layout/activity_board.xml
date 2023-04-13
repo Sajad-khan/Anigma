@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".anigma.activities.ProfileActivity">
+    tools:context=".anigma.activities.BoardActivity">
+
     <androidx.appcompat.widget.Toolbar
         android:background="#41477A"
-        android:id="@+id/profile_toolbar"
+        android:id="@+id/board_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
@@ -16,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="Profile"
+            android:text="@string/create_board"
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="@color/white"/>
@@ -28,31 +29,36 @@
         app:cardElevation="5dp"
         app:strokeColor="@color/black"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/profile_toolbar"
+        app:layout_constraintTop_toTopOf="@id/board_toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
         <LinearLayout
-            android:layout_margin="15dp"
+            android:layout_marginTop="60dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp">
+
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_profile"
+                android:id="@+id/iv_board"
                 android:layout_width="@dimen/profile_image_size"
                 android:layout_height="@dimen/profile_image_size"
                 android:layout_gravity="center"
                 android:layout_marginBottom="15dp"
-                android:src="@drawable/ic_nav_placeholder"/>
+                android:src="@drawable/grey_placeholder"
+                tools:ignore="ImageContrastCheck" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_gravity="center"
                 android:layout_width="@dimen/general_width"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_height="wrap_content"
-                android:hint="Name">
+                android:hint="@string/board_name">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/profile_name"
+                    android:id="@+id/board_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
@@ -60,45 +66,14 @@
                     android:layout_marginBottom="10dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_gravity="center"
-                android:layout_width="@dimen/general_width"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_height="wrap_content"
-                android:hint="Email">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/profile_email"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapWords"
-                    tools:ignore="TextContrastCheck"
-                    android:layout_marginBottom="10dp"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_gravity="center"
-                android:layout_width="@dimen/general_width"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_height="wrap_content"
-                android:hint="Phone">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/profile_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="phone"
-                    tools:ignore="TextContrastCheck"
-                    android:layout_marginBottom="10dp"/>
-            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/btn_update"
+                android:id="@+id/btn_create"
                 android:background="@drawable/ripple_effect_btn"
                 android:layout_width="@dimen/general_width"
                 android:layout_height="50dp"
                 android:layout_marginTop="16dp"
-                android:text="Update"
+                android:text="@string/create"
                 android:textColor="@color/white"
                 android:textSize="@dimen/button_size"
                 android:textStyle="bold"
@@ -107,5 +82,4 @@
                 />
         </LinearLayout>
     </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,10 +33,6 @@ import java.io.File
 import java.io.IOException
 
 class ProfileActivity : BaseActivity() {
-    companion object{
-        const val CAMERA_REQUEST_CODE = 1
-        const val GALLERY_REQUEST_CODE = 2
-    }
     private lateinit var binding: ActivityProfileBinding
     private var mSelectedImageFileUri: Uri? = null
     private var profileImageURL: String = ""
@@ -61,6 +57,10 @@ class ProfileActivity : BaseActivity() {
             if(mSelectedImageFileUri != null){
                 uploadUserImage()
             }
+            else{
+                showProgressDialog(getString(R.string.please_wait))
+                updateUserData(false)
+            }
         }
 
         binding.ivProfile.setOnClickListener {
@@ -70,15 +70,13 @@ class ProfileActivity : BaseActivity() {
             imageSelectionDialog.setItems(imageDialogItems){
                     _, which ->
                 when(which){
-                    0 -> choosePhotoFromGallery()
-                    1 -> captureNewPhoto()
+                    0 -> Constants.choosePhotoFromGallery(this)
+                    1 -> Constants.captureNewPhoto(this)
                 }
             }
             imageSelectionDialog.show()
         }
     }
-
-
 
     fun updateProfileUI(user: User){
         mUser = user
@@ -94,69 +92,11 @@ class ProfileActivity : BaseActivity() {
         binding.profilePhone.setText(user.mobileNo.toString())
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    private fun choosePhotoFromGallery() {
-        Dexter.withContext(this).withPermission(
-            android.Manifest.permission.READ_MEDIA_IMAGES
-        ).withListener(object: PermissionListener {
-            override fun onPermissionGranted(response: PermissionGrantedResponse) {
-                val galleryIntent = Intent(
-                    Intent.ACTION_PICK,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
-            }
-            override fun onPermissionDenied(response: PermissionDeniedResponse) {
-                showRationaleDialogForPermissions()
-            }
-            override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest,
-                                                            token: PermissionToken) {
-                showRationaleDialogForPermissions()
-            }
-        }).check()
-    }
-
-    private fun captureNewPhoto() {
-        Dexter.withContext(this).withPermission(
-            android.Manifest.permission.CAMERA
-        ).withListener(object: PermissionListener {
-            override fun onPermissionGranted(response: PermissionGrantedResponse) {
-                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
-            }
-            override fun onPermissionDenied(response: PermissionDeniedResponse) {
-                showRationaleDialogForPermissions()
-            }
-            override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest,
-                                                            token: PermissionToken
-            ) {
-                showRationaleDialogForPermissions()
-            }
-        }).onSameThread().check()
-    }
-
-    private fun showRationaleDialogForPermissions() {
-        AlertDialog.Builder(this)
-            .setMessage("Permission is required. You can enable it at Settings/HappyPlaces/Permissions")
-            .setPositiveButton("Settings"){
-                    _, _ -> try{
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                val uri = Uri.fromParts("package", packageName, null)
-                intent.data = uri
-                startActivity(intent)
-            } catch (e: ActivityNotFoundException){
-                e.printStackTrace()
-            }
-            }.setNegativeButton("Cancel"){
-                    dialog, _ ->
-                dialog.dismiss()
-            }.show()
-    }
-
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK){
-            if(requestCode == GALLERY_REQUEST_CODE){
+            if(requestCode == Constants.GALLERY_REQUEST_CODE){
                 if(data != null){
                     val contentUri = data.data
                     mSelectedImageFileUri = contentUri
@@ -171,7 +111,7 @@ class ProfileActivity : BaseActivity() {
                     }
                 }
             }
-            else if(requestCode == CAMERA_REQUEST_CODE){
+            else if(requestCode == Constants.CAMERA_REQUEST_CODE){
                 val imageBitmap = data!!.extras!!.get("data") as Bitmap
                 mSelectedImageFileUri = data.data
                 binding.ivProfile.setImageBitmap(imageBitmap)
@@ -184,7 +124,7 @@ class ProfileActivity : BaseActivity() {
         showProgressDialog(resources.getString(R.string.please_wait))
         if(mSelectedImageFileUri != null){
             val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
-                "USER_IMAGE"+System.currentTimeMillis()+"."+getFileExtension(mSelectedImageFileUri!!)
+                "USER_IMAGE"+System.currentTimeMillis()+"."+Constants.getFileExtension(this,mSelectedImageFileUri!!)
             )
             sRef.putFile(mSelectedImageFileUri!!).addOnSuccessListener {
                 taskSnapshot ->
@@ -196,7 +136,7 @@ class ProfileActivity : BaseActivity() {
                     uri->
                     profileImageURL = uri.toString()
                     Log.i("Downloadable image url", profileImageURL)
-                    updateUserData(profileImageURL)
+                    updateUserData(true)
                 }
             }
         }
@@ -206,39 +146,23 @@ class ProfileActivity : BaseActivity() {
         }
     }
 
-    private fun getFileExtension(uri: Uri): String? {
-
-        //Check uri format to avoid null
-
-        //Check uri format to avoid null
-        val extension: String? = if (uri.scheme.equals(ContentResolver.SCHEME_CONTENT)) {
-            //If scheme is a content
-            val mime = MimeTypeMap.getSingleton()
-            mime.getExtensionFromMimeType(contentResolver.getType(uri))
-        } else {
-            //If scheme is a File
-            //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
-            MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(File(uri.path.toString())).toString())
-        }
-
-        return extension
-    }
-
     fun profileUpdateSuccess(){
         hideProgressDialog()
         Toast.makeText(this@ProfileActivity, "Your profile has been updated successfully!",
             Toast.LENGTH_SHORT).show()
-        FireStoreClass().loadUserData(this)
+        setResult(Activity.RESULT_OK)
         finish()
     }
 
-    private fun updateUserData(imageURL: String){
+    private fun updateUserData(imageChanged: Boolean){
         val userHashmap = HashMap<String, Any>()
-        Log.e("IMAGE_URL_", imageURL)
-        if(imageURL.isEmpty()) Log.e("EMPTY_URL", "image url is empty")
-        if(imageURL == mUser.imageLocation) Log.e("URL_SAME", "same image url")
-        if(imageURL.isNotEmpty() && imageURL != mUser.imageLocation){
-            userHashmap[Constants.IMAGE] = imageURL
+        if(imageChanged){
+            Log.e("IMAGE_URL_", profileImageURL)
+            if(profileImageURL.isEmpty()) Log.e("EMPTY_URL", "image url is empty")
+            if(profileImageURL == mUser.imageLocation) Log.e("URL_SAME", "same image url")
+            if(profileImageURL.isNotEmpty() && profileImageURL != mUser.imageLocation){
+                userHashmap[Constants.IMAGE] = profileImageURL
+            }
         }
         if(binding.profileName.text.toString() != mUser.name){
             userHashmap[Constants.NAME] = binding.profileName.text.toString()

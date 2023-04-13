@@ -9,7 +9,9 @@
     tools:openDrawer="start">
 
     <include layout="@layout/content_main"/>
-
+    <include
+        android:id="@+id/include_layout"
+        layout="@layout/app_bar_main"/>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -17,5 +19,8 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
+
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

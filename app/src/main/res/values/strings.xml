@@ -25,4 +25,8 @@
     <string name="nav_signOut">Sign Out</string>
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
+    <string name="board_name">Board Name</string>
+    <string name="create">Create</string>
+    <string name="add_action">add new button</string>
+    <string name="create_board">Create Board</string>
 </resources>
