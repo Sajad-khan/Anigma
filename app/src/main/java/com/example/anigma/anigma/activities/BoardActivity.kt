@@ -1,25 +1,14 @@
 package com.example.anigma.anigma.activities
 
 import android.app.Activity
-import android.app.AlertDialog
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.provider.Settings
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.anigma.R
 import com.example.anigma.anigma.utils.Constants
 import com.example.anigma.databinding.ActivityBoardBinding
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.PermissionListener
-import java.io.IOException
 
 class BoardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBoardBinding
@@ -46,15 +35,12 @@ class BoardActivity : AppCompatActivity() {
                 if(data != null){
                     val contentUri = data.data
                     selectedUri = contentUri
-                    try {
-                        val selectedImageBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentUri)
-                        binding.ivBoard.setImageBitmap(selectedImageBitmap)
-                    }catch (e: IOException){
-                        e.printStackTrace()
-                        Toast.makeText(this,
-                            "Failed to load the image",
-                            Toast.LENGTH_SHORT).show()
-                    }
+                    Glide
+                        .with(this)
+                        .load(contentUri)
+                        .centerCrop()
+                        .placeholder(R.drawable.grey_placeholder)
+                        .into(binding.ivBoard)
                 }
             }
         }

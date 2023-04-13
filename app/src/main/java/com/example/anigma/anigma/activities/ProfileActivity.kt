@@ -2,17 +2,12 @@ package com.example.anigma.anigma.activities
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ActivityNotFoundException
-import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.provider.Settings
 import android.util.Log
-import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
@@ -23,14 +18,6 @@ import com.example.anigma.anigma.utils.Constants
 import com.example.anigma.databinding.ActivityProfileBinding
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.PermissionListener
-import java.io.File
-import java.io.IOException
 
 class ProfileActivity : BaseActivity() {
     private lateinit var binding: ActivityProfileBinding
@@ -100,15 +87,12 @@ class ProfileActivity : BaseActivity() {
                 if(data != null){
                     val contentUri = data.data
                     mSelectedImageFileUri = contentUri
-                    try {
-                        val selectedImageBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentUri)
-                        binding.ivProfile.setImageBitmap(selectedImageBitmap)
-                    }catch (e: IOException){
-                        e.printStackTrace()
-                        Toast.makeText(this,
-                            "Failed to load the image",
-                            Toast.LENGTH_SHORT).show()
-                    }
+                    Glide
+                        .with(this)
+                        .load(mSelectedImageFileUri)
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_nav_placeholder)
+                        .into(binding.ivProfile)
                 }
             }
             else if(requestCode == Constants.CAMERA_REQUEST_CODE){

@@ -23,7 +23,6 @@ import java.io.File
 object Constants {
     const val USERS: String = "users"
     const val CURR_USER: String = "currentUser"
-
     const val MOBILE: String = "mobileNo"
     const val NAME: String = "name"
     const val IMAGE: String = "imageLocation"
@@ -71,9 +70,6 @@ object Constants {
     }
 
     fun getFileExtension(activity: Activity, uri: Uri): String? {
-
-        //Check uri format to avoid null
-
         //Check uri format to avoid null
         val extension: String? = if (uri.scheme.equals(ContentResolver.SCHEME_CONTENT)) {
             //If scheme is a content
@@ -84,7 +80,6 @@ object Constants {
             //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
             MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(File(uri.path.toString())).toString())
         }
-
         return extension
     }
     private fun showRationaleDialogForPermissions(context: Context) {
